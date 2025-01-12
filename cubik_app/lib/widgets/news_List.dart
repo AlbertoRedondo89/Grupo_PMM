@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 class NewsList extends StatelessWidget {
   final List<Article> news;
-  final Function(Article)? onAdd; // Función para añadir noticias
+  final Function(Article)? onAdd;    // Función para añadir noticias
+  final Function(Article)? onRemove; // Función para eliminar noticias
 
-  const NewsList({Key? key, required this.news, this.onAdd}) : super(key: key);
+  const NewsList({Key? key, required this.news, this.onAdd, this.onRemove})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class NewsList extends StatelessWidget {
       itemBuilder: (_, int index) => _NewsListItem(
         article: news[index],
         onAdd: onAdd,
+        onRemove: onRemove,
       ),
     );
   }
@@ -26,9 +29,11 @@ class NewsList extends StatelessWidget {
 
 class _NewsListItem extends StatelessWidget {
   final Article article;
-  final Function(Article)? onAdd; // Función para añadir noticias
+  final Function(Article)? onAdd;    // Función para añadir noticias
+  final Function(Article)? onRemove; // Función para eliminar noticias
 
-  const _NewsListItem({Key? key, required this.article, this.onAdd}) : super(key: key);
+  const _NewsListItem({Key? key, required this.article, this.onAdd, this.onRemove})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +87,17 @@ class _NewsListItem extends StatelessWidget {
                         child: const Text('Añadir'),
                       ),
                     ),
+                  if (onRemove != null)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => onRemove!(article),
+                        child: const Text(
+                          'Eliminar',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -91,3 +107,4 @@ class _NewsListItem extends StatelessWidget {
     );
   }
 }
+

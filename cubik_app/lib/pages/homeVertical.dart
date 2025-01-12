@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cubik_app/widgets/news_List.dart';
 
 class HomeVertical extends StatelessWidget {
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +39,11 @@ class HomeVertical extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: state.selectedArticles.isNotEmpty
-                          ? NewsList(news: state.selectedArticles)
+                          ? NewsList(
+                              news: state.selectedArticles,
+                              onRemove: (article) =>
+                                  context.read<NewsCubit>().removeFromSelected(article),
+                            )
                           : const Center(child: Text('No hay noticias seleccionadas.')),
                     ),
                   ),

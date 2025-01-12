@@ -39,4 +39,21 @@ class NewsCubit extends Cubit<NewsState> {
       emit(NewsStateWithSelected(List<Article>.from(_articles), _selectedArticles));
     }
   }
+
+  void removeFromSelected(Article article) {
+  if (state is NewsStateWithSelected) {
+    final currentState = state as NewsStateWithSelected;
+
+    // Actualizamos la lista de seleccionados eliminando el artículo
+    _selectedArticles = List<Article>.from(currentState.selectedArticles)
+      ..removeWhere((a) => a.title == article.title);
+
+    // Emitimos el nuevo estado con las listas actualizadas
+    emit(NewsStateWithSelected(
+      List<Article>.from(currentState.articles),
+      _selectedArticles
+    ));
+  }
+}
+
 }
