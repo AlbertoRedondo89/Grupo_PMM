@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cubik_app/models/newsresponse.dart';
 import 'package:cubik_app/models/article.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import 'newsstate.dart';
 

@@ -1,6 +1,4 @@
 
-import 'dart:convert';
-
 import 'package:cubik_app/models/newsresponse.dart';
 
 class Article {

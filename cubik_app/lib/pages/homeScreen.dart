@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
         create: (context) => NewsCubit()..fetchNews(),
         child: BlocBuilder<NewsCubit, NewsState>(
           builder: (context, state) {
-            print('Reconstruyendo BlocBuilder con estado: $state');
+            //print('Reconstruyendo BlocBuilder con estado: $state');  //
             if (state is NewsLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is NewsStateWithSelected) {
