@@ -1,3 +1,4 @@
+import 'package:cubik_app/pages/homeVertical.dart';
 import 'package:flutter/material.dart';
 import 'package:cubik_app/pages/homeScreen.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'News',
       initialRoute: 'home',
       routes: {
-        'home': (BuildContext context) => HomeScreen(),
+        'home': (BuildContext context) => HomeVertical(),
       },
       theme: ThemeData.light().copyWith(
           appBarTheme:
