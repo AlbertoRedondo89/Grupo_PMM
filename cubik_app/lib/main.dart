@@ -1,6 +1,5 @@
 import 'package:cubik_app/pages/homeVertical.dart';
 import 'package:flutter/material.dart';
-import 'package:cubik_app/pages/homeScreen.dart';
 
 
 void main() => runApp(const AppState());

@@ -45,7 +45,8 @@ class _NewsListItem extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
@@ -54,52 +55,42 @@ class _NewsListItem extends StatelessWidget {
                 image: article.urlToImage != null && article.urlToImage!.isNotEmpty
                     ? NetworkImage(article.urlToImage!)
                     : const AssetImage('assets/no-image.jpg') as ImageProvider,
-                width: 100,
-                height: 100,
+                width: double.infinity,
+                height: 150,
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    article.title.isNotEmpty ? article.title : 'Sin título',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    article.description != null && article.description!.isNotEmpty
-                        ? article.description!
-                        : 'Sin descripción',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  if (onAdd != null)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => onAdd!(article),
-                        child: const Text('Añadir'),
-                      ),
-                    ),
-                  if (onRemove != null)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => onRemove!(article),
-                        child: const Text(
-                          'Eliminar',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ),
-                ],
+            const SizedBox(height: 10),
+            Text(
+              article.title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              article.description ?? '',
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (onAdd != null)
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () => onAdd!(article),
+                  ),
+                if (onRemove != null)
+                  IconButton(
+                    icon: const Icon(Icons.remove),
+                    onPressed: () => onRemove!(article),
+                  ),
+              ],
             ),
           ],
         ),
@@ -107,4 +98,3 @@ class _NewsListItem extends StatelessWidget {
     );
   }
 }
-
