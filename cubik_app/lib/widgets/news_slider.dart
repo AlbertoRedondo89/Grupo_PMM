@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class NewsSlider extends StatelessWidget {
   final List<Article> news;
-  const NewsSlider({super.key, required this.news});
+  final Function(Article)? onAdd; // Función para añadir noticias
+
+  const NewsSlider({Key? key, required this.news, this.onAdd}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,6 @@ class NewsSlider extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: 280,
-      // color: Colors.red,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,16 +31,16 @@ class NewsSlider extends StatelessWidget {
             child: Text('Noticias',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
-          const SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: news.length,
-                itemBuilder: (_, int index) => _NewImage(
-                      artic: news[index],
-                    )),
+              scrollDirection: Axis.horizontal,
+              itemCount: news.length,
+              itemBuilder: (_, int index) => _NewImage(
+                artic: news[index],
+                onAdd: onAdd,
+              ),
+            ),
           )
         ],
       ),
@@ -49,20 +50,19 @@ class NewsSlider extends StatelessWidget {
 
 class _NewImage extends StatelessWidget {
   final Article artic;
-  const _NewImage({Key? key, required this.artic}) : super(key: key);
+  final Function(Article)? onAdd; // Función para añadir noticias
+
+  const _NewImage({Key? key, required this.artic, this.onAdd}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 130,
       height: 200,
-      // color: Colors.green,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
           GestureDetector(
-            //onTap: () => Navigator.pushNamed(context, 'details',
-            //    arguments: meal.getIdMeal()),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
@@ -76,9 +76,7 @@ class _NewImage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           Expanded(
             child: Text(
               artic.title.isNotEmpty ? artic.title : 'Sin título',
@@ -86,7 +84,12 @@ class _NewImage extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),
-          )
+          ),
+          if (onAdd != null)
+            ElevatedButton(
+              onPressed: () => onAdd!(artic),
+              child: const Text('Añadir'),
+            ),
         ],
       ),
     );
