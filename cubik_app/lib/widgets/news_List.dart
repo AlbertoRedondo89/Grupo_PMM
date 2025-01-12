@@ -5,8 +5,9 @@ class NewsList extends StatelessWidget {
   final List<Article> news;
   final Function(Article)? onAdd;    // Función para añadir noticias
   final Function(Article)? onRemove; // Función para eliminar noticias
+  final ScrollController? scrollController; // Controlador de desplazamiento opcional
 
-  const NewsList({Key? key, required this.news, this.onAdd, this.onRemove})
+  const NewsList({Key? key, required this.news, this.onAdd, this.onRemove, this.scrollController})
       : super(key: key);
 
   @override
@@ -17,6 +18,7 @@ class NewsList extends StatelessWidget {
       );
     }
     return ListView.builder(
+      controller: scrollController,
       itemCount: news.length,
       itemBuilder: (_, int index) => _NewsListItem(
         article: news[index],
@@ -56,7 +58,7 @@ class _NewsListItem extends StatelessWidget {
                     ? NetworkImage(article.urlToImage!)
                     : const AssetImage('assets/no-image.jpg') as ImageProvider,
                 width: double.infinity,
-                height: 150,
+                height: 200,
                 fit: BoxFit.cover,
               ),
             ),
