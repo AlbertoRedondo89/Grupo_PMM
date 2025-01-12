@@ -9,29 +9,35 @@ import 'newsstate.dart';
 class NewsCubit extends Cubit<NewsState> {
   NewsCubit() : super(NewsInitial());
 
+  List<Article> _articles = []; // Lista de noticias cargadas
+  List<Article> _selectedArticles = []; // Lista de noticias seleccionadas
+
   final String _apiKey = '74b85f61f06b449f8f37474e45c74902';
   final String _baseUrl = 'https://newsapi.org/v2/everything';
 
- void fetchNews() async {
+  void fetchNews() async {
     try {
       emit(NewsLoading());
       final response = await http.get(
-        Uri.parse('https://newsapi.org/v2/everything?q=animal&language=es&apiKey=74b85f61f06b449f8f37474e45c74902'),
+        Uri.parse('$_baseUrl?q=animal&language=es&apiKey=$_apiKey'),
       );
 
       if (response.statusCode == 200) {
         final newsResponse = NewsResponse.fromJson(response.body);
-        print('Noticias cargadas: ${newsResponse.articles.length}');
-
-        emit(NewsLoaded(newsResponse.articles));
+        _articles = newsResponse.articles; // Guardamos las noticias cargadas
+        emit(NewsStateWithSelected(_articles, _selectedArticles));
       } else {
-        print('Error en la respuesta de la API: ${response.statusCode}');
         emit(NewsError('Error al cargar las noticias: ${response.statusCode}'));
       }
-    } catch (e, stackTrace) {
-      print('Excepción capturada: $e');
-      print('StackTrace: $stackTrace');
+    } catch (e) {
       emit(NewsError('Error de conexión: $e'));
+    }
+  }
+
+  void addToSelected(Article article) {
+    if (!_selectedArticles.any((a) => a.title == article.title)) {
+      _selectedArticles = List<Article>.from(_selectedArticles)..add(article);
+      emit(NewsStateWithSelected(List<Article>.from(_articles), _selectedArticles));
     }
   }
 }

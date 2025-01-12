@@ -29,3 +29,13 @@ class NewsError extends NewsState {
   @override
   List<Object?> get props => [message];
 }
+
+class NewsStateWithSelected extends NewsState {
+  final List<Article> articles;
+  final List<Article> selectedArticles;
+
+  const NewsStateWithSelected(this.articles, this.selectedArticles);
+
+  @override
+  List<Object?> get props => [articles, selectedArticles];
+}

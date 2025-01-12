@@ -17,13 +17,28 @@ class HomeScreen extends StatelessWidget {
         create: (context) => NewsCubit()..fetchNews(),
         child: BlocBuilder<NewsCubit, NewsState>(
           builder: (context, state) {
+            print('Reconstruyendo BlocBuilder con estado: $state');
             if (state is NewsLoading) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state is NewsLoaded) {
-              // Usamos el widget NewsSlider para mostrar la lista de noticias
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: NewsSlider(news: state.articles),
+            } else if (state is NewsStateWithSelected) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: NewsSlider(
+                        news: state.articles,
+                        onAdd: (article) => context.read<NewsCubit>().addToSelected(article),
+                      ),
+                    ),
+                  ),
+                  const Divider(),
+                  Expanded(
+                    child: state.selectedArticles.isNotEmpty
+                        ? NewsSlider(news: state.selectedArticles)
+                        : const Center(child: Text('No hay noticias seleccionadas.')),
+                  ),
+                ],
               );
             } else if (state is NewsError) {
               return Center(child: Text(state.message));
