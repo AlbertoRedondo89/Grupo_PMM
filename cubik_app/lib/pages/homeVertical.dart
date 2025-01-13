@@ -4,21 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cubik_app/widgets/news_List.dart';
 
-class HomeVertical extends StatefulWidget {
-  @override
-  _HomeVerticalState createState() => _HomeVerticalState();
-}
-
-class _HomeVerticalState extends State<HomeVertical> {
+class HomeVertical extends StatelessWidget {
   final PageController _pageController = PageController();
   final ScrollController _scrollController = ScrollController();
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _scrollController.dispose();
-    super.dispose();
-  }
+  HomeVertical({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,16 +56,16 @@ class _HomeVerticalState extends State<HomeVertical> {
                               news: state.selectedArticles,
                               onRemove: (article) =>
                                   context.read<NewsCubit>().removeFromSelected(article),
+                              scrollController: _scrollController,
                             )
-                          : const Center(child: Text('No hay noticias seleccionadas.')),
+                          : const Center(child: Text('No hay noticias favoritas')),
                     ),
                   ),
                 ],
               );
-            } else if (state is NewsError) {
-              return Center(child: Text(state.message));
+            } else {
+              return const Center(child: Text('Error al cargar noticias'));
             }
-            return const Center(child: Text('Sin noticias disponibles'));
           },
         ),
       ),
